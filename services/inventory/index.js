@@ -20,6 +20,13 @@ server.addService(inventoryProto.InventoryService.service, {
             products: products,
         });
     },
+    //A função acima usa o método find para pesquisar em products pelo ID de produto fornecido. 
+    SearchProductByID: (payload, callback) => {
+      callback(
+          null,
+          products.find((product) => product.id == payload.request.id)
+      );
+    },
 });
 
 server.bindAsync('127.0.0.1:3002', grpc.ServerCredentials.createInsecure(), () => {

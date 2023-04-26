@@ -43,6 +43,27 @@ app.get('/shipping/:cep', (req, res, next) => {
 });
 
 /**
+ nova rota /product/{id} que receberá o ID do produto como parâmetro. Na definição da rota, você deve também incluir a chamada para o método definido no Passo 3
+ */
+
+app.get('/product/:id', (req, res, next) => {
+  // Chama método do microsserviço.
+  inventory.SearchProductByID({ id: req.params.id }, (err, product) => {
+      // Se ocorrer algum erro de comunicação
+      // com o microsserviço, retorna para o navegador.
+      if (err) {
+          console.error(err);
+          res.status(500).send({ error: 'something failed :(' });
+      } else {
+          // Caso contrário, retorna resultado do
+          // microsserviço (um arquivo JSON) com os dados
+          // do produto pesquisado
+          res.json(product);
+      }
+  });
+});
+
+/**
  * Inicia o router
  */
 app.listen(3000, () => {
